@@ -1,0 +1,9 @@
+{
+  "autoload": {
+    "psr-4": {
+      "inetshop\\": "vendor/inetshop/core",
+      "app\\": "app"
+    }
+  },
+  "require": {}
+}
