@@ -35,14 +35,14 @@ class Router
 
 //                передача в конструктор контроллера всі параметри (для використання)
             if (class_exists($controller)) {
-                 $controllerObject = new $controller(self::$route);
-                 $action = self::lowerCamelCase(self::$route['action']) . 'Action';
-                 if (method_exists($controllerObject, $action)){
-                      $controllerObject->$action();
-                      $controllerObject->getView();
-                 }else{
-                     throw new \Exception("Method $controller::$action not found! ", 404);
-                 }
+                $controllerObject = new $controller(self::$route);
+                $action = self::lowerCamelCase(self::$route['action']) . 'Action';
+                if (method_exists($controllerObject, $action)) {
+                    $controllerObject->$action();
+                    $controllerObject->getView();
+                } else {
+                    throw new \Exception("Method $controller::$action not found! ", 404);
+                }
             } else {
                 throw new \Exception("Controller $controller not found! ", 404);
             }
@@ -54,6 +54,8 @@ class Router
     //    приймає url адресу і шукає відповідність в таблиці маршрутів
     public static function matchRoute($url)
     {
+        $url = self::removeQueryString($url);
+
         foreach (self::$routes as $pattern => $route) {
             if (preg_match("#{$pattern}#", $url, $matches)) {
                 foreach ($matches as $key => $value) {
@@ -88,5 +90,21 @@ class Router
     {
         return lcfirst(self::upperCamelCase($name));
     }
+
+    protected static function removeQueryString($url)
+    {
+        if ($url) {
+            $params = explode('&', $url, 2); // поділ параметрів на дві частини
+
+//            перевірка на те, чи є знак '=' в 0 елементі масива.
+//            якщо такий є, то повертаємо пусту строку
+            if (false === strpos($params[0], '=')) {
+                return trim($params[0], '/');
+            } else {
+                return '';
+            }
+        }
+    }
+
 
 }
