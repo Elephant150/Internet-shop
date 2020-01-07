@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use inetshop\App;
+use inetshop\Cache;
 
 class MainController extends AppController
 {
@@ -13,6 +14,15 @@ class MainController extends AppController
         $name = 'Tom';
         $age = 21;
         $nickname = 'Red';
-        $this->set(compact('name', 'age', 'nickname', 'posts'));
+        $names = ['Tom', 'Elise', 'Kate', 'Cali'];
+        $cache = Cache::instance();
+//        $cache->set('test', $names);
+//        $cache->delete('test');
+        $data = $cache->get('test');
+        if (!$data){
+            $cache->set('test', $names);
+        }
+        debug($data);
+        $this->set(compact('name', 'age', 'nickname', 'names', 'posts'));
     }
 }

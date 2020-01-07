@@ -2,7 +2,8 @@
 <?php
 echo $name . '<br>';
 echo $age . PHP_EOL;
-echo $nickname . PHP_EOL;
+echo $nickname . '<br>';
+echo debug($names) . PHP_EOL;
 
 foreach ($posts as $post):?>
 <h3><?=$post->title;?></h3>
